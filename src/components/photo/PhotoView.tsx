@@ -17,7 +17,7 @@ import styles from './PhotoView.module.scss';
 import { SaveButton } from './SaveButton';
 
 const formatNumber = new Intl.NumberFormat('en-US');
-const formatDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
+const formatDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
 const RELATED_LIMIT = 15;
 
 export async function PhotoView({ id, inModal = false }: { id: string; inModal?: boolean }) {

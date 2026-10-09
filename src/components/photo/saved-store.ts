@@ -15,6 +15,11 @@ export function setSavedOverride(id: string, saved: boolean) {
   listeners.forEach((listener) => listener());
 }
 
+export function clearSavedOverrides() {
+  overrides.clear();
+  listeners.forEach((listener) => listener());
+}
+
 export function useSaved(id: string, serverValue: boolean): boolean {
   return useSyncExternalStore(
     subscribe,

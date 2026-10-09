@@ -30,7 +30,7 @@ export async function PhotoFeed({
       <div className={styles.empty}>
         <h2>{emptyTitle}</h2>
         <p>{emptyText}</p>
-        {result.page > 1 && result.totalPages > 0 ? (
+        {result.page > 1 ? (
           <Link href={pathname as Route} className="btn btn--lg">
             Back to first page
           </Link>

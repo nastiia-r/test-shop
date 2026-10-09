@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { FeedPageSkeleton } from '@/components/gallery/FeedPageSkeleton';
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 async function SearchResults({ params, searchParams }: Props) {
   const [{ query: slug }, filters] = await Promise.all([params, searchParams]);
   const query = slugToQuery(slug);
+  if (!query) notFound();
 
   return (
     <SearchCollection

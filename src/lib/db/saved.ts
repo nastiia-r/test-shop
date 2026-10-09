@@ -21,16 +21,15 @@ export async function getSavedIds(userId: string): Promise<Set<string>> {
 
 export async function savePhoto(userId: string, photo: Photo): Promise<void> {
   const store = await getStore();
-  const saved = await getSavedPhotos(userId);
-  if (saved.some((item) => item.id === photo.id)) return;
-  await store.set(savedKey(userId), [{ ...photo, savedAt: new Date().toISOString() }, ...saved]);
+  await store.update<SavedPhoto[]>(savedKey(userId), (saved) => {
+    if (saved?.some((item) => item.id === photo.id)) return null;
+    return [{ ...photo, savedAt: new Date().toISOString() }, ...(saved ?? [])];
+  });
 }
 
 export async function removePhoto(userId: string, photoId: string): Promise<void> {
   const store = await getStore();
-  const saved = await getSavedPhotos(userId);
-  await store.set(
-    savedKey(userId),
-    saved.filter((item) => item.id !== photoId),
+  await store.update<SavedPhoto[]>(savedKey(userId), (saved) =>
+    saved?.some((item) => item.id === photoId) ? saved.filter((item) => item.id !== photoId) : null,
   );
 }

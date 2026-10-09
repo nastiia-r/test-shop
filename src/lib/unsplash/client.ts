@@ -72,7 +72,14 @@ async function request<T>(
   return { data: (await res.json()) as T, headers: res.headers };
 }
 
+const emptyPage = (page: number): PhotoPage => ({ photos: [], page, total: 0, totalPages: 0 });
+
 export async function getEditorialPhotos(page: number): Promise<PhotoPage> {
+  if (page > MAX_PAGES) return emptyPage(page);
+  return fetchEditorialPhotos(page);
+}
+
+async function fetchEditorialPhotos(page: number): Promise<PhotoPage> {
   'use cache';
   cacheLife('hours');
 
@@ -95,7 +102,12 @@ export interface SearchOptions {
   perPage?: number;
 }
 
-export async function searchPhotos({
+export async function searchPhotos(options: SearchOptions): Promise<PhotoPage> {
+  if (options.page > MAX_PAGES) return emptyPage(options.page);
+  return fetchSearchPhotos(options);
+}
+
+async function fetchSearchPhotos({
   query,
   page,
   orientation,

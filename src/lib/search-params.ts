@@ -22,8 +22,10 @@ export function parseOrder(value: RawParam): SearchOrder {
   return first(value) === 'latest' ? 'latest' : 'relevant';
 }
 
+const MAX_QUERY_LENGTH = 100;
+
 export function normalizeQuery(value: string): string | null {
-  const query = value.trim().replace(/\s+/g, ' ').slice(0, 100);
+  const query = value.trim().replace(/\s+/g, ' ').slice(0, MAX_QUERY_LENGTH);
   return query.length > 0 ? query : null;
 }
 
@@ -31,8 +33,16 @@ export function queryToSlug(query: string): string {
   return encodeURIComponent(query.toLowerCase().replace(/ /g, '-'));
 }
 
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 export function slugToQuery(slug: string): string {
-  return decodeURIComponent(slug).replace(/-/g, ' ');
+  return normalizeQuery(safeDecode(slug).replace(/-/g, ' ')) ?? '';
 }
 
 export function buildHref(

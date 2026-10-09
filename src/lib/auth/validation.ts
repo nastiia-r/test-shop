@@ -9,7 +9,7 @@ export const signupSchema = z.object({
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
-    .max(72, 'Password is too long')
+    .refine((value) => new TextEncoder().encode(value).length <= 72, 'Password is too long')
     .regex(/[a-zA-Z]/, 'Password must contain a letter')
     .regex(/[0-9]/, 'Password must contain a number'),
 });
@@ -36,8 +36,15 @@ export function toFieldErrors(error: z.ZodError): FieldErrors {
   return result;
 }
 
+const REDIRECT_BASE = 'http://localhost';
+
+const isUnsafeChar = (char: string) => char === '\\' || char.charCodeAt(0) < 0x20 || char.charCodeAt(0) === 0x7f;
+
 export function safeRedirect(target: FormDataEntryValue | string | null | undefined, fallback = '/'): Route {
-  if (typeof target !== 'string') return fallback as Route;
-  if (!target.startsWith('/') || target.startsWith('//') || target.startsWith('/\\')) return fallback as Route;
-  return target as Route;
+  if (typeof target !== 'string' || !target.startsWith('/')) return fallback as Route;
+  if ([...target].some(isUnsafeChar)) return fallback as Route;
+
+  const url = new URL(target, REDIRECT_BASE);
+  if (url.origin !== REDIRECT_BASE) return fallback as Route;
+  return `${url.pathname}${url.search}${url.hash}` as Route;
 }

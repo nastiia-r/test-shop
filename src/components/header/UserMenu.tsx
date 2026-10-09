@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
 
+import { clearSavedOverrides } from '@/components/photo/saved-store';
 import { logout } from '@/lib/auth/actions';
 
 import styles from './UserNav.module.scss';
@@ -57,7 +58,7 @@ export function UserMenu({ name, email }: { name: string; email: string }) {
         <Link href="/profile" className={styles.menuItem}>
           Your collection
         </Link>
-        <form action={logout}>
+        <form action={logout} onSubmit={clearSavedOverrides}>
           <button type="submit" className={styles.menuItem}>
             Log out
           </button>

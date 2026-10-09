@@ -35,6 +35,15 @@ describe('query helpers', () => {
     expect(slugToQuery(slug)).toBe('black cat');
     expect(slugToQuery(queryToSlug('café & tea'))).toBe('café & tea');
   });
+
+  it('survives malformed percent-encoding', () => {
+    expect(slugToQuery('%E0%A4%A')).toBe('%E0%A4%A');
+    expect(slugToQuery('%')).toBe('%');
+  });
+
+  it('limits the query length', () => {
+    expect(slugToQuery('a'.repeat(500))).toHaveLength(100);
+  });
 });
 
 describe('buildHref', () => {

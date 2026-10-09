@@ -17,7 +17,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   return store.get<User>(userKey(email));
 }
 
-export async function createUser(input: Pick<User, 'name' | 'email' | 'passwordHash'>): Promise<User> {
+export async function createUser(input: Pick<User, 'name' | 'email' | 'passwordHash'>): Promise<User | null> {
   const store = await getStore();
   const user: User = {
     id: crypto.randomUUID(),
@@ -26,6 +26,5 @@ export async function createUser(input: Pick<User, 'name' | 'email' | 'passwordH
     passwordHash: input.passwordHash,
     createdAt: new Date().toISOString(),
   };
-  await store.set(userKey(user.email), user);
-  return user;
+  return store.update<User>(userKey(user.email), (existing) => (existing ? null : user));
 }

@@ -35,6 +35,10 @@ describe('safeRedirect', () => {
     ['//evil.com', '/'],
     ['/\\evil.com', '/'],
     ['https://evil.com', '/'],
+    ['/\t/evil.com', '/'],
+    ['/\n/evil.com', '/'],
+    ['/foo\\bar', '/'],
+    ['/%2F%2Fevil.com', '/%2F%2Fevil.com'],
     [null, '/'],
   ])('%j → %j', (input, expected) => {
     expect(safeRedirect(input)).toBe(expected);

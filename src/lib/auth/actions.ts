@@ -8,6 +8,8 @@ import { createUser, findUserByEmail } from '@/lib/db/users';
 import { createSession, deleteSession } from './session';
 import { type AuthFormState, loginSchema, safeRedirect, signupSchema, toFieldErrors } from './validation';
 
+const EMAIL_TAKEN = 'An account with this email already exists';
+
 let dummyHash: Promise<string> | undefined;
 const getDummyHash = () => (dummyHash ??= bcrypt.hash('picky-timing-equaliser', 10));
 
@@ -18,10 +20,12 @@ export async function signup(_prev: AuthFormState, formData: FormData): Promise<
 
   const { name, email, password } = parsed.data;
   if (await findUserByEmail(email)) {
-    return { fieldErrors: { email: 'An account with this email already exists' }, values };
+    return { fieldErrors: { email: EMAIL_TAKEN }, values };
   }
 
   const user = await createUser({ name, email, passwordHash: await bcrypt.hash(password, 10) });
+  if (!user) return { fieldErrors: { email: EMAIL_TAKEN }, values };
+
   await createSession({ userId: user.id, name: user.name, email: user.email });
   redirect(safeRedirect(formData.get('next')));
 }
