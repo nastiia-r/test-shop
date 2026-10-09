@@ -1,0 +1,48 @@
+@use '../../styles/mixins' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--color-bg);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.06);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--header-height);
+  padding-inline: var(--gutter);
+
+  @include tablet {
+    gap: 20px;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+
+  @include mobile-only {
+    @include visually-hidden;
+  }
+}
+
+.navPlaceholder {
+  width: 32px;
+  height: 32px;
+
+  @include tablet {
+    width: 160px;
+  }
+}

@@ -1,0 +1,89 @@
+@use '../../styles/mixins' as *;
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.login {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition);
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  @include mobile-only {
+    display: none;
+  }
+}
+
+.menuWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 10;
+  min-width: 220px;
+  padding: 8px 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  box-shadow: var(--shadow-menu);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.menuHeader {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 12px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--color-surface);
+  font-size: 14px;
+
+  span {
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  text-align: left;
+
+  &:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+}

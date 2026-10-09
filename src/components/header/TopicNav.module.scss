@@ -1,0 +1,66 @@
+@use '../../styles/mixins' as *;
+
+.nav {
+  position: relative;
+  border-bottom: 1px solid var(--color-surface);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 48px;
+    background: linear-gradient(90deg, rgb(255 255 255 / 0), var(--color-bg));
+    pointer-events: none;
+  }
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: var(--topics-height);
+  padding-inline: var(--gutter) 48px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  @include hide-scrollbar;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--transition);
+
+  &:hover {
+    color: var(--color-text);
+  }
+
+  &[aria-current='page'] {
+    color: var(--color-text);
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--color-text);
+    }
+  }
+}
+
+.divider {
+  flex-shrink: 0;
+  width: 1px;
+  height: 32px;
+  background: var(--color-border);
+}
