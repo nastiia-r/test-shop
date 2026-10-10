@@ -1,0 +1,17 @@
+export const TOPICS = [
+  'Wallpapers',
+  'Nature',
+  '3D Renders',
+  'Travel',
+  'Architecture',
+  'Textures',
+  'Street Photography',
+  'Film',
+  'Animals',
+  'Fashion',
+  'People',
+  'Food',
+  'Interiors',
+  'Experimental',
+  'Business',
+] as const;

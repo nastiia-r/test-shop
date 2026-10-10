@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { FeedPageSkeleton } from '@/components/gallery/FeedPageSkeleton';
-import { SearchCollection } from '@/components/gallery/SearchCollection';
-import { parseOrder, parseOrientation, parsePage, queryToSlug, slugToQuery } from '@/lib/search-params';
+import { FeedPageSkeleton } from '@/components/feed/feed-skeleton';
+import { SearchFeed } from '@/components/feed/search-feed';
+import { parseOrder, parseOrientation } from '@/shared/lib/search-filters';
+import { parsePage, queryToSlug, slugToQuery } from '@/shared/lib/search-params';
 
 type Props = PageProps<'/s/photos/[query]'>;
 
@@ -19,7 +20,7 @@ async function SearchResults({ params, searchParams }: Props) {
   if (!query) notFound();
 
   return (
-    <SearchCollection
+    <SearchFeed
       variant="search"
       query={query}
       pathname={`/s/photos/${queryToSlug(query)}`}

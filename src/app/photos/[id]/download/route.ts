@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { getUnsplashErrorKind, trackDownload } from '@/lib/unsplash/client';
+import { trackDownload } from '@/server/unsplash/client';
+import { getUnsplashErrorKind } from '@/shared/lib/unsplash-errors';
 
 export async function GET(_request: Request, { params }: RouteContext<'/photos/[id]/download'>) {
   const { id } = await params;

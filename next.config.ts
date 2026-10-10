@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -6,9 +8,12 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
   images: {
     loader: 'custom',
-    loaderFile: './src/lib/unsplash/image-loader.ts',
+    loaderFile: './src/shared/lib/image-loader.ts',
     deviceSizes: [640, 828, 1080, 1440, 1920, 2560],
     imageSizes: [32, 64, 128, 256, 384],
+  },
+  sassOptions: {
+    loadPaths: [path.join(process.cwd(), 'src/shared/styles')],
   },
   poweredByHeader: false,
   async headers() {

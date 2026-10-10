@@ -1,0 +1,17 @@
+@use 'mixins' as *;
+
+.skeleton {
+  @include shimmer;
+}
+
+.rect {
+  border-radius: 0;
+}
+
+.rounded {
+  border-radius: var(--radius-sm);
+}
+
+.circle {
+  border-radius: 50%;
+}

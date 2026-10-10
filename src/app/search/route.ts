@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { normalizeQuery, queryToSlug } from '@/lib/search-params';
+import { normalizeQuery, queryToSlug } from '@/shared/lib/search-params';
 
 export function GET(request: NextRequest) {
   const query = normalizeQuery(request.nextUrl.searchParams.get('q') ?? '');

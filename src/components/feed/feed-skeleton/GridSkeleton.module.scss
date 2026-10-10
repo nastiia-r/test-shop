@@ -1,0 +1,33 @@
+@use 'mixins' as *;
+
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--grid-gap);
+  overflow: hidden;
+  max-height: 120vh;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include laptop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.skeleton[data-density='dense'] {
+  @include tablet {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include laptop {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap);
+}

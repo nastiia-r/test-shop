@@ -1,0 +1,17 @@
+@use 'mixins' as *;
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 24px;
+}
+
+.group {
+  display: flex;
+  gap: 4px;
+  max-width: 100%;
+  overflow-x: auto;
+
+  @include hide-scrollbar;
+}

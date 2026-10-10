@@ -1,40 +1,40 @@
 import { Suspense } from 'react';
 
-import { ApiErrorState, tryUnsplash } from '@/components/ApiErrorState';
-import { GridSkeleton } from '@/components/gallery/GridSkeleton';
-import { LayoutToggle } from '@/components/gallery/LayoutToggle';
-import { PhotoFeed } from '@/components/gallery/PhotoFeed';
-import { TopicNav } from '@/components/header/TopicNav';
-import { parsePage } from '@/lib/search-params';
-import { getEditorialPhotos } from '@/lib/unsplash/client';
+import { UnsplashErrorState } from '@/components/common/unsplash-error-state';
+import { GridSkeleton } from '@/components/feed/feed-skeleton';
+import { LayoutToggle } from '@/components/feed/layout-toggle';
+import { PhotoFeed } from '@/components/feed/photo-feed';
+import { TopicNav } from '@/components/layout/topic-nav';
+import { getEditorialPhotos } from '@/server/unsplash/client';
+import { parsePage } from '@/shared/lib/search-params';
+import { tryUnsplash } from '@/shared/lib/unsplash-errors';
+import { Container } from '@/shared/ui/container';
+import { PageHeader } from '@/shared/ui/page-header';
 
-async function EditorialFeed({ searchParams }: { searchParams: PageProps<'/'>['searchParams'] }) {
+type Props = PageProps<'/'>;
+
+async function EditorialFeed({ searchParams }: Pick<Props, 'searchParams'>) {
   const page = parsePage((await searchParams).page);
   const result = await tryUnsplash(() => getEditorialPhotos(page));
-  if (!result.ok) return <ApiErrorState kind={result.kind} />;
+  if (!result.ok) return <UnsplashErrorState kind={result.kind} />;
 
   return <PhotoFeed result={result.data} pathname="/" />;
 }
 
-export default function HomePage({ searchParams }: PageProps<'/'>) {
+export default function HomePage({ searchParams }: Props) {
   return (
     <>
       <TopicNav />
-      <div className="container">
-        <header className="page-head">
-          <div>
-            <h1 className="page-title">Editorial</h1>
-            <p className="page-subtitle">
-              The internet’s source for visuals. Powered by creators everywhere, curated by the Unsplash editors.
-            </p>
-          </div>
-          <LayoutToggle />
-        </header>
-
+      <Container>
+        <PageHeader
+          title="Editorial"
+          subtitle="The internet’s source for visuals. Powered by creators everywhere, curated by the Unsplash editors."
+          actions={<LayoutToggle />}
+        />
         <Suspense fallback={<GridSkeleton />}>
           <EditorialFeed searchParams={searchParams} />
         </Suspense>
-      </div>
+      </Container>
     </>
   );
 }

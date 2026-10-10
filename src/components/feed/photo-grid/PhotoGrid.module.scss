@@ -1,0 +1,42 @@
+@use 'mixins' as *;
+
+.grid {
+  width: 100%;
+}
+
+.layout {
+  display: none;
+  align-items: flex-start;
+  gap: var(--grid-gap);
+}
+
+.column {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-gap);
+}
+
+$comfortable: '.grid[data-density="comfortable"]';
+$dense: '.grid[data-density="dense"]';
+
+@include mobile-only {
+  .layout[data-columns='1'] {
+    display: flex;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  #{$comfortable} .layout[data-columns='2'],
+  #{$dense} .layout[data-columns='3'] {
+    display: flex;
+  }
+}
+
+@include laptop {
+  #{$comfortable} .layout[data-columns='3'],
+  #{$dense} .layout[data-columns='5'] {
+    display: flex;
+  }
+}

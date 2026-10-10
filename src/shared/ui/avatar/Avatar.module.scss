@@ -1,0 +1,24 @@
+.avatar {
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.sm {
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+.initials {
+  display: grid;
+  place-items: center;
+  background: var(--color-text);
+  color: var(--color-inverse);
+  font-weight: 600;
+}

@@ -1,22 +1,20 @@
 import { Suspense } from 'react';
 
-import { Modal } from '@/components/photo/Modal';
-import { PhotoSkeleton } from '@/components/photo/PhotoSkeleton';
-import { PhotoView } from '@/components/photo/PhotoView';
+import { PhotoDetails, PhotoDetailsSkeleton, PhotoModal } from '@/components/photo/photo-details';
 
 type Props = PageProps<'/photos/[id]'>;
 
 async function PhotoContent({ params }: Pick<Props, 'params'>) {
   const { id } = await params;
-  return <PhotoView id={id} inModal />;
+  return <PhotoDetails id={id} inModal />;
 }
 
-export default function PhotoModal({ params }: Props) {
+export default function PhotoModalPage({ params }: Props) {
   return (
-    <Modal label="Photo details">
-      <Suspense fallback={<PhotoSkeleton />}>
+    <PhotoModal>
+      <Suspense fallback={<PhotoDetailsSkeleton inModal />}>
         <PhotoContent params={params} />
       </Suspense>
-    </Modal>
+    </PhotoModal>
   );
 }

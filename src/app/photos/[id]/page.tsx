@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { tryUnsplash } from '@/components/ApiErrorState';
-import { PhotoSkeleton } from '@/components/photo/PhotoSkeleton';
-import { PhotoView } from '@/components/photo/PhotoView';
-import { getPhoto } from '@/lib/unsplash/client';
+import { PhotoDetails } from '@/components/photo/photo-details';
+import { PhotoDetailsSkeleton } from '@/components/photo/photo-details';
+import { getPhoto } from '@/server/unsplash/client';
+import { tryUnsplash } from '@/shared/lib/unsplash-errors';
 
 type Props = PageProps<'/photos/[id]'>;
 
@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function PhotoContent({ params }: Pick<Props, 'params'>) {
   const { id } = await params;
-  return <PhotoView id={id} />;
+  return <PhotoDetails id={id} />;
 }
 
 export default function PhotoPage({ params }: Props) {
   return (
-    <Suspense fallback={<PhotoSkeleton />}>
+    <Suspense fallback={<PhotoDetailsSkeleton />}>
       <PhotoContent params={params} />
     </Suspense>
   );

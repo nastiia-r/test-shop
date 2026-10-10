@@ -2,17 +2,26 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { FeedPageSkeleton } from '@/components/gallery/FeedPageSkeleton';
-import { LayoutToggle } from '@/components/gallery/LayoutToggle';
-import { PhotoFeed } from '@/components/gallery/PhotoFeed';
-import { getSession } from '@/lib/auth/session';
-import { getSavedPhotos } from '@/lib/db/saved';
-import { parsePage } from '@/lib/search-params';
-import { PER_PAGE } from '@/lib/unsplash/client';
+import { FeedPageSkeleton } from '@/components/feed/feed-skeleton';
+import { LayoutToggle } from '@/components/feed/layout-toggle';
+import { PhotoFeed } from '@/components/feed/photo-feed';
+import { getSession } from '@/server/auth/session';
+import { getSavedPhotos } from '@/server/db/collection';
+import { PER_PAGE } from '@/server/unsplash/client';
+import { parsePage } from '@/shared/lib/search-params';
+import { Container } from '@/shared/ui/container';
+import { PageHeader } from '@/shared/ui/page-header';
 
 export const metadata: Metadata = { title: 'Your collection' };
 
-async function Collection({ searchParams }: PageProps<'/profile'>) {
+type Props = PageProps<'/profile'>;
+
+function describeCount(count: number): string {
+  if (count === 0) return 'Your collection is empty.';
+  return `${count} saved ${count === 1 ? 'photo' : 'photos'}`;
+}
+
+async function Collection({ searchParams }: Props) {
   const session = await getSession();
   if (!session) redirect('/login?next=/profile');
 
@@ -22,30 +31,19 @@ async function Collection({ searchParams }: PageProps<'/profile'>) {
   const photos = saved.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   return (
-    <div className="container">
-      <header className="page-head">
-        <div>
-          <h1 className="page-title">{session.name}</h1>
-          <p className="page-subtitle">
-            {saved.length === 0
-              ? 'Your collection is empty.'
-              : `${saved.length} saved ${saved.length === 1 ? 'photo' : 'photos'}`}
-          </p>
-        </div>
-        <LayoutToggle />
-      </header>
-
+    <Container>
+      <PageHeader title={session.name} subtitle={describeCount(saved.length)} actions={<LayoutToggle />} />
       <PhotoFeed
         result={{ photos, page, totalPages, total: saved.length }}
         pathname="/profile"
         emptyTitle={page > 1 ? 'Nothing on this page' : 'No saved photos yet'}
         emptyText="Hover over any photo in the feed and press the heart to keep it here."
       />
-    </div>
+    </Container>
   );
 }
 
-export default function ProfilePage(props: PageProps<'/profile'>) {
+export default function ProfilePage(props: Props) {
   return (
     <Suspense fallback={<FeedPageSkeleton />}>
       <Collection {...props} />

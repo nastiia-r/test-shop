@@ -2,9 +2,10 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { FeedPageSkeleton } from '@/components/gallery/FeedPageSkeleton';
-import { SearchCollection } from '@/components/gallery/SearchCollection';
-import { parsePage, queryToSlug, slugToQuery } from '@/lib/search-params';
+import { FeedPageSkeleton } from '@/components/feed/feed-skeleton';
+import { SearchFeed } from '@/components/feed/search-feed';
+import { TopicNav } from '@/components/layout/topic-nav';
+import { parsePage, queryToSlug, slugToQuery } from '@/shared/lib/search-params';
 
 type Props = PageProps<'/t/[tag]'>;
 
@@ -18,7 +19,12 @@ async function TagCollection({ params, searchParams }: Props) {
   const tag = slugToQuery(slug);
   if (!tag) notFound();
 
-  return <SearchCollection variant="tag" query={tag} pathname={`/t/${queryToSlug(tag)}`} page={parsePage(page)} />;
+  return (
+    <>
+      <TopicNav active={tag} />
+      <SearchFeed variant="tag" query={tag} pathname={`/t/${queryToSlug(tag)}`} page={parsePage(page)} />
+    </>
+  );
 }
 
 export default function TagPage(props: Props) {

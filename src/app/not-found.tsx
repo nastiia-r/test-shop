@@ -1,14 +1,21 @@
-import Link from 'next/link';
+import { LinkButton } from '@/shared/ui/button';
+import { Container } from '@/shared/ui/container';
+import { EmptyState } from '@/shared/ui/empty-state';
 
 export default function NotFound() {
   return (
-    <div className="container status-page">
-      <p className="status-code">404</p>
-      <h1>Page not found</h1>
-      <p>The photo or page you are looking for does not exist or was removed.</p>
-      <Link href="/" className="btn btn--primary btn--lg">
-        Back to the feed
-      </Link>
-    </div>
+    <Container>
+      <EmptyState
+        variant="page"
+        code="404"
+        title="Page not found"
+        description="The photo or page you are looking for does not exist or was removed."
+        actions={
+          <LinkButton href="/" variant="primary" size="lg">
+            Back to the feed
+          </LinkButton>
+        }
+      />
+    </Container>
   );
 }

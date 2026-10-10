@@ -1,0 +1,9 @@
+@use 'mixins' as *;
+
+.close {
+  margin-left: 4px;
+
+  @include tablet {
+    display: none;
+  }
+}
